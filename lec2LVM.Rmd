@@ -1,0 +1,774 @@
+---
+title: "Lecture 2: Latent Variable Models"
+author: Jeff Rouder
+date: June, 2024
+
+output:
+  beamer_presentation:
+    theme: "metropolis"
+    fonttheme: "structurebold"
+    fig_caption: false
+    incremental: false
+header-includes   :
+    - \usepackage{bm}
+    - \usepackage{amsmath}
+    - \usepackage{pcl}
+    
+always_allow_html: true
+---
+
+```{r,echo=F,eval=T,warning=F,message=F}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE, warning=FALSE)
+```
+
+## Meet Carl
+
+![](car.jpg)
+
+## Fuel Efficiency
+
+- In U.S., how many miles per gallon? $m$
+
+- In Europe, how many liters per 100km? $\ell$
+
+
+\[ \begin{aligned}
+\ell &= \frac{1}{m}\times\frac{1}{1.609} \times \frac{3.785}{1} \times 100\\
+\ell &= \frac{235.24}{m}
+\end{aligned}
+\]
+
+## Fuel Efficiency
+
+```{r}
+par(cex=1.5)
+mpg=15:40
+lkm=function(mpg) 235.24/mpg
+plot(mpg,lkm(mpg),typ='l',xlab="Miles Per Gallon",
+     ylab="Liters per 100km")
+```
+
+```{r}
+set.seed(123)
+M=50
+targ=23
+gals=round(rbeta(M,7,1)*17,2)
+miles=round(targ*gals+rnorm(M,0,15),1)
+lit=gals*3.785
+kmp100=miles*1.609/100
+am=lm(miles~gals)
+eu=lm(lit~kmp100)
+amSlope=am$coefficients[2]
+euSlope=eu$coefficients[2]
+euConvert=lkm(amSlope)
+```
+
+## My Car Over 50 Fills
+
+```{r}
+par(cex=1.5)
+plot(gals,miles,xlab="Gallons",ylab="Miles",pch=20)
+abline(am)
+text(14,250,paste(round(amSlope,2),"mpg"))
+```
+
+## Fuel Efficiency of My Car
+
+```{r}
+par(cex=1.5)
+plot(mpg,lkm(mpg),typ='l',xlab="Miles Per Gallon",
+     ylab="Liters per 100km")
+points(amSlope,euConvert,pch=21,bg='blue')
+abline(h=euConvert,lty=2,col='blue')
+```
+
+## My Car, European Approach
+
+```{r}
+par(cex=1.5)
+plot(kmp100,lit,xlab="km / 100",ylab="Liters",pch=20)
+abline(eu)
+text(5,40,paste(round(euSlope,2),"l/100km"))
+```
+
+## Paradox
+
+```{r}
+par(cex=1.5)
+plot(mpg,lkm(mpg),typ='l',xlab="Miles Per Gallon",
+     ylab="Liters per 100km")
+points(amSlope,euConvert,pch=21,bg='blue')
+abline(h=euConvert,lty=2,col='blue')
+abline(h=euSlope,col='darkgreen')
+legend(27,14,legend=c("American Regression","European Regression"),cex=.8,col=c("blue","darkgreen"),lty=2:1)
+```
+
+## Upshot
+
+- The data are fixed
+- 10% difference in fuel efficiency is unexpected and troubling
+- The 10% difference is systematic.  Happens in the limit of infinite tank fills.
+- Why? 
+  + Regressing X on Y is not the same as regressing Y on X.  
+
+
+## Resolution
+
+- OLS is conditional.  We are understanding Y given X.  Y|X is not the same as X|Y.
+
+- To get the structural relations among X and Y, we might wish to study the joint distribution without conditioning on one or the other.
+
+- Modeling random variables jointly---multivariate modeling---is often aided with the introduction of latent variables to account for correlation.
+
+
+## Bivariate Normal
+
+- $h$: Height
+- $w$: Weight
+
+\[
+\begin{pmatrix}h\\w\end{pmatrix} \sim \mbox{N}_2(\bfmu,\bfSigma)
+\]
+
+or 
+
+\[
+\begin{pmatrix}h\\w\end{pmatrix}
+\sim\mbox{N}_2\left(\begin{pmatrix}\mu_h\\ \mu_w\end{pmatrix},
+\begin{pmatrix}\sigma_h^2 &\rho\sigma_h\sigma_w\\
+\rho\sigma_h\sigma_w & \sigma_w^2\end{pmatrix}\right)
+\]
+
+```{r}
+link <- 'https://raw.githubusercontent.com/rouderj/uciPsych10A-F21/main/anthro.dat'
+dat <- read.table(url(link),head=T)
+y <- dat[,11:12]/10
+colnames(y) <- c("Height","Weight")
+mu=apply(y,2,mean)
+S=cov(y)
+
+```
+
+## Bivariate Normal
+
+```{r}
+library(mvtnorm)
+myDnorm=function(h,w) dmvnorm(cbind(h,w),mu,S)
+h=140:200
+w=20:150
+pdf=outer(h,w,myDnorm)
+par(cex=1.4)
+contour(h,w,(pdf),xlab="Height",ylab="Weight")
+```
+
+## Bivariate Normal
+
+```{r}
+library(mvtnorm)
+myDnorm=function(h,w) dmvnorm(cbind(h,w),mu,S)
+h=140:200
+w=20:150
+pdf=outer(h,w,myDnorm)
+par(mfrow=c(1,2),mar=c(4,4,1,1),cex=1.4)
+contour(h,w,(pdf),xlab="Height",ylab="Weight")
+slope=sqrt(S[2,2]/S[1,1])
+int=mu[2]-mu[1]*slope
+abline(int,slope)
+text(140,140,expression(paste("Slope: ",sigma[w]/sigma[h])),adj=0)
+contour(w,h,t(pdf),xlab="Weight",ylab="Height")
+slopeI=sqrt(S[1,1]/S[2,2])
+intI=mu[1]-mu[2]*slopeI
+abline(intI,slopeI)
+text(20,195,expression(paste("Slope: ",sigma[h]/sigma[w])),adj=0)
+
+```
+
+## Real Height and Weight
+
+```{r}
+par(cex=1.4)
+contour(h,w,(pdf))
+points(y,pch=19,col=rgb(0,.5,0,.3))
+abline(int,slope)
+abline(lm(y$Weight~y$Height),col='darkgreen')
+text(140,140,expression(paste("Slope: ",sigma[w]/sigma[h])),adj=0)
+text(140,120,expression(paste("OLS Slope: ",rho*sigma[w]/sigma[h])),adj=0)
+
+```
+
+## Notation for many observations
+
+\[\begin{pmatrix} Y_{i1}\\ Y_{i2} \\\vdots \\ Y_{1J} \end{pmatrix}
+\sim \mbox{N}_J\left(
+\begin{pmatrix} \mu_{1}\\ \mu_{2} \\\vdots \\ \mu_{J} \end{pmatrix},\begin{pmatrix}
+\sigma_1^2 & \rho_{12}\sigma_1\sigma_2 & \ldots & \rho_{1J}\sigma_1\sigma_J\\
+\rho_{12}\sigma_1\sigma_2 & \sigma_2^2 & \ldots & \rho_{2J}\sigma_2\sigma_J\\
+\vdots & \vdots & \ddots & \vdots\\
+\rho_{1J}\sigma_1\sigma_J & \rho_{2J}\sigma_2\sigma_J & \ldots & \sigma_J^2
+\end{pmatrix}\right)\]
+
+or 
+
+\[
+\bfY_i \sim \mbox{N}_J(\bfmu,\bfSigma)
+\]
+
+- All latent variable models are **constraints** on $\bfSigma$.
+
+
+## Real Data From 5 Measures of Body Size
+
+```{r}
+y=dat[,c(11,5,2,3,12)]/10
+round(cor(y),3)
+```
+
+## Real Data 5 Measures
+
+```{r}
+library(corrplot)
+corPlot=function(rho,a=0,b=1,...) corrplot(rho,method="color",cl.pos='b',tl.pos='d',tl.col='black',col.lim=c(a,b),cl.ratio = .2,cl.length=2,addgrid.col = 'black',... )
+
+corPlot(cor(y))
+```
+
+
+
+## General Model
+
+- How many unique correlations are there in 5 tasks?
+- $J(J-1)/2 = 10$.
+- No more than 10 correlations, 5 variances, 5 means.
+
+
+## One Factor Model
+
+- Let $i=1,\ldots,I$ denote people
+- Let $j=1,\ldots,J$ denote scores (items, measures, tasks)
+
+\[ 
+\begin{aligned}
+Y_{ij}|\phi_i &\sim \mbox{N}(\mu_j+\lambda_j\phi_i,\delta_j^2)\\
+\phi_i &\sim \mbox{N}(0,1)
+\end{aligned}
+\]
+
+- $\phi_i$  is **factor score** for the $i$th person
+  + latent ability
+- $\lambda_j$ is **factor loading** for $j$th score
+
+## Marginal Model
+
+- In frequentist analysis, $\phi_i$ has a nuanced (perhaps nonsensical) status. It is neither a datum (not observed) nor a parameter (has a distribution).  It is *latent datum*.
+
+- Often, it is marginalized across.  **Marginalization** is really, really helpful.
+
+## Marginalization 
+
+- $f(y) = \int_\theta f(y\mid\theta) d\theta$
+
+- There are shortcuts for the normal
+
+## Marginal Model
+
+Conditional Model
+\[ 
+\begin{aligned}
+Y_{ij}|\phi_i &\sim \mbox{N}(\mu_j+\lambda_j\phi_i,\delta_j^2)\\
+\phi_i &\sim \mbox{N}(0,1)
+\end{aligned}
+\]
+
+Marginal Model
+\[
+\bfY_{i}=\begin{pmatrix} Y_{i1}\\  Y_{i2} \\ \vdots\\ Y_{iJ} \end{pmatrix} \sim \mbox{N}_J\left(\begin{pmatrix} \mu_1\\ \mu_2\\\vdots \\ \mu_J\end{pmatrix},
+\begin{pmatrix} \delta^2_1+\lambda^2_1 & \lambda_1\lambda_2 & \ldots & \lambda_1\lambda_J\\
+\lambda_1\lambda_2 & \delta^2_2+\lambda^2_2 & \ldots& \lambda_2\lambda_J\\
+\vdots & \vdots & \ddots & \vdots\\
+\lambda_1\lambda_J & \lambda_2\lambda_J & \ldots& \delta^2_J+\lambda^2_J
+\end{pmatrix}\right) 
+\]
+
+## Full Matrix Notation
+
+
+Conditional Model
+\[ 
+\begin{aligned}
+\bfY_{i}|\phi_i &\sim \mbox{N}(\bfmu+\bflambda\phi_i,D(\bfdelta^2))\\
+\phi_i &\sim \mbox{N}(0,1)
+\end{aligned}
+\]
+
+- Note: $D(\bfdelta^2)$ mean diagonal matrix with diagonal $\bfdelta^2$.
+
+Marignal Model
+\[
+\bfY_{i}  \sim \mbox{N}(\bfmu,\bflambda\bflambda'+D(\bfdelta^2))
+\]
+
+
+## Running in Lavaan
+
+
+- Why I like lavaan
+  + great documentation
+  + fast
+  + lots of options
+
+## Running in Lavaan
+
+```{r,echo=T,message=F}
+#install.packages('lavaan')
+library(lavaan)
+fit=efa(data=y,nfactors=1,rotation="varimax")
+summary(fit)
+```
+
+## What Does This Output Mean?
+
+- Factor loadings are standardized.  What does that mean?
+
+- Two main types of standardization
+  + Effect-size
+  + Total
+  
+## Standardization
+\[
+Y_i = \mu + X_i\theta +\epsilon_{i},\quad \epsilon_i \sim \mbox{N}(0,\sigma^2)
+\]
+
+- Assume centered covariates. Mean of $X_i=0$
+- What are the units?
+  + $Y_i$: $u_y$
+  + $\mu$: $u_y$
+  + $X_i$: $u_x$
+  + $\sigma^2$: $u_y^2$
+  + $\theta$: $u_y/u_x$.  Also $-\infty<\theta<\infty$
+
+## Standardization of covariates
+
+- Standardize covariate: 
+  + $m_x= \sum(X_i)/N, \quad s_x = \sqrt{\sum X_i^2/N}$
+  + $W_i = (X_i-m_x)/s_x$
+
+\[
+Y_i = \mu + W_i\theta +\epsilon_{i},\quad \epsilon_i \sim \mbox{N}(0,\sigma^2)
+\]
+
+- $W_i$ is unitless
+- $\theta$ is in units $u_y$
+
+## Standardization, Residual
+
+\[
+Y_i = \mu + \sigma W_i\theta^\dagger +\epsilon_{i},\quad \epsilon_i \sim \mbox{N}(0,\sigma^2)
+\]
+
+- $\theta^\dagger$ is effect size, standardized w/ respect to variability in both covariate and residual.
+
+- $\theta^\dagger=\theta/\sigma$
+
+- $\theta^\dagger$ is unitless, still $-\infty<\theta^\dagger<\infty$
+
+\[
+\frac{Y_i-\mu}{\sigma} = W_i\theta^\dagger +\epsilon^\dagger_{i},\quad \epsilon_i^\dagger \sim \mbox{N}(0,1)
+\]
+
+## Standardization, Full Variance
+\[
+Y_i = \mu+ \sigma_y\theta^{*} +\epsilon_{i},\quad \epsilon_i \sim \mbox{N}(0,\sigma^2)
+\]
+
+- $\theta^{*}$ is an effect size too, but it is standardized w/ respect to variability in covariate and the dependent measure.
+
+- $\theta^* = \theta/\sigma^y$
+- $\sigma^2_y = \theta^2+\sigma^2$
+- $(\theta^{*})^2 = \theta^2/(\sigma^2+\theta^2)=\rho^2$
+- $-1 \leq \theta^{*} \leq 1$
+
+
+\[
+\frac{Y_i-\mu}{\sigma_y} = W_i\theta^{*} +\epsilon^{*}_{i},\quad \epsilon_i^{*} \sim \mbox{N}\left((0,\frac{\sigma^2}{\sigma^2+\theta^2}\right)\]
+
+
+## Factor Model Version
+
+
+\[
+\lambda^{*}_j = \frac{\lambda_j}{\sqrt{\lambda_j^2+\delta_j^2}}
+\]
+
+- Standardized Loadings:  $0\leq\lambda_j\leq1$
+
+## For Any Covariance:
+
+
+\[ \begin{aligned}
+\bfSigma &= \begin{pmatrix}
+\sigma_1 & 0 & \ldots & 0\\ 0 &\sigma^2 & \ldots& 0\\
+\vdots & \vdots &\ddots&\vdots\\ 0 & 0 & \ldots & \sigma_J\end{pmatrix}
+\begin{pmatrix}
+1 & \rho_{12} & \ldots & \rho_{1J}\\
+\rho_{12} & 1 & \ldots & \rho_{2J}\\
+\vdots & \vdots &\ddots&\vdots\\
+\rho_{1J} & \rho_{2J} & \ldots & 1
+\end{pmatrix}
+\begin{pmatrix}
+\sigma_1 & 0 & \ldots & 0\\ 0 &\sigma^2 & \ldots& 0\\
+\vdots & \vdots &\ddots&\vdots\\ 0 & 0 & \ldots & \sigma_J\end{pmatrix}\\
+&=D(\bfsigma)\bfrho D(\bfsigma) \end{aligned}
+\]
+
+- show it with a two-by-two example.
+
+
+## One-Factor Model
+
+- $\bfSigma=\bflambda\bflambda'+D(\bfdelta^2)$
+
+- $D(\bfSigma^2) = D(\bflambda^2+\bfdelta^2)$
+  + note $D(\bflambda\bflambda')=D(\lambda_1^2,\ldots,\lambda_J^2)=D(\bflambda^2)$
+
+
+\[ 
+\bfSigma=D(\sqrt{\bflambda^2+\bfdelta^2})\bfrho D(\sqrt{\bflambda^2+\bfdelta^2})
+\]
+
+where 
+\[
+\bfrho = \bflambda^*(\bflambda^*)' + (\bfI-D(\bflambda^*(\bflambda^*)'))
+\]
+
+
+or 
+
+\[\begin{aligned}
+Z_{ij} &= \frac{Y_{ij}-\mu_{y_j}}{\sigma_{y_j}}\\
+\bfZ_i & \sim \mbox{N}_J(\bf0,\bfrho)
+\end{aligned}
+\]
+
+with $\bfrho$ given above.
+
+
+## Values
+
+```{r,echo=T}
+inspect(fit[[1]],what="est")
+inspect(fit[[1]],what="std")
+```
+
+
+
+## How Good Is The Fit?
+
+```{r}
+par(mfrow=c(1,2))
+corPlot(cov2cor(fitted(fit[[1]])$cov))
+corPlot(cor(y))
+```
+
+## SEM Model Represenation
+
+```{R,echo=T,eval=T}
+library(lavaanPlot)
+lavaanPlot(model=fit[[1]],covs=T,coefs=T)
+```
+
+## SEM Model Represenation
+
+```{r,echo=F,eval=T}
+library(lavaanPlot)
+lavaanPlot(model=fit[[1]],covs=T,coefs=T)
+```
+
+Jeff, Doesnt work for pdf!, go to rstudio
+
+
+
+
+## Hypothetical One Factor Example
+\[
+\lambda_j=(.2,.9,.4,.8,.6)
+\]
+
+- use clustering to order rows and columns
+- corrplot(cor,order='hclust')
+
+## Hypothetical One Factor Example
+```{r}
+lambda=c(.2,.9,.4,.8,.6)
+cor=crossprod(t(lambda))
+diag(cor)=rep(1,length(lambda))
+par(mfrow=c(1,2))
+corPlot(cor)
+corPlot(cor,order='hclust')
+```
+
+## The General (Orthogonal) Factor Model
+
+- Let $D$ be the number of factors
+- Let $\phi_{di}$ be ability for the $i$th person on the $d$th factor
+- Let $\lambda_{jd}$ be the loading from the $j$th score to the $d$th factor
+
+Conditional/Univariate/unscaled
+\[\begin{aligned}
+Y_{ij}\mid(\phi_{i1},\ldots,\phi_{iD}) &\sim \mbox{N}\left(\mu_j+\sum_d\lambda_{jd}\phi_{id},\;\;\delta_j^2\right)\\
+\phi_{id} &\sim \mbox{N}(0,1)
+\end{aligned}
+\]
+
+or, for scaled,
+
+\[\begin{aligned}
+Z_{ij}\mid(\phi_{i1},\ldots,\phi_{iD}) &\sim \mbox{N}\left(\sum_d\lambda_{jd}\phi_{id},\;\;1-\sum_d\lambda_{jd}^2\right)\\
+\phi_{id} &\sim \mbox{N}(0,1)
+\end{aligned}
+\]
+
+
+## The Orthogonal Factor Model
+
+Conditional + Multivariate
+
+\[ 
+\bflambda_{J\times D} = \begin{pmatrix} 
+\lambda_{11} &\ldots &\lambda_{1D}\\
+\vdots & \vdots & \vdots\\
+\lambda_{J1} &\ldots &\lambda_{JD}\\
+\end{pmatrix}
+\]
+
+\[ \begin{aligned}
+\bfZ_{i}|\bfphi_i & \sim \mbox{N}_J(\bflambda\bfphi,\;\bfI-\bfD(\bflambda\bflambda'))\\
+\bfphi_i &\sim \mbox{N}_D(\bf0,\bfI)
+\end{aligned}
+\]
+
+## The Orthogonal Factor Model
+
+Marginal + Multivariate
+
+\[ \begin{aligned}
+\bfZ_{i} &\sim \mbox{N}_J(\bfzero,\; \bfrho)\\
+\bfrho &= \bflambda\bflambda'+\bfI-\bfD(\bflambda\bflambda')
+\end{aligned}
+\]
+
+
+## 2-Factor Example A
+
+- 6 Scores/Tasks
+- 2 Factors
+- First 3 load on 1 factor; next three on another
+
+\[ \begin{aligned}
+\lambda_{\cdot 1}=(.6,.7,.8,0,0,0)\\
+\lambda_{\cdot 2}=(0,0,0,.6,.7,.8)
+\end{aligned}
+\]
+
+```{r}
+lambda=matrix(nrow=6,ncol=2)
+lambda[,1]=c(.6,.7,.8,0,0,0)
+lambda[,2]=c(0,0,0,.6,.7,.8)
+rho=crossprod(t(lambda))+diag(6)-diag(diag(crossprod(t(lambda))))
+#print(rho)
+``` 
+
+## 2-Factor Example A
+
+```{r}
+corPlot(rho)
+```
+
+## 2-Factor Example B
+
+- 6 Scores/Tasks
+- 2 Factors
+- Graded Loadings
+
+\[ \begin{aligned}
+\lambda_{\cdot 1}&=(.9, .74, .58, .42, .26, .1)\\
+\lambda_{\cdot 2}&=(.1, .26, .42, .58, .74, .9)
+\end{aligned}
+\]
+
+
+```{r}
+lambda=matrix(nrow=6,ncol=2)
+lambda[,1]=seq(.9,.1,length=6)
+lambda[,2]=rev(lambda[,1])
+rho=crossprod(t(lambda))+diag(6)-diag(diag(crossprod(t(lambda))))
+#print(rho)
+``` 
+
+## 2-Factor Example B
+
+```{r}
+corPlot(rho)
+```
+
+## Anthropomorphic Example
+
+```{r}
+y=dat[,1:12]/10
+corrplot(cor(y),order='hclust',method='color')
+```
+
+
+## Exploratory Factor Analysis (orthogonal)
+
+```{r,echo=T}
+shortNames<-c('wH','fL','hL','sH','sL','nC','cC','wC','tC','sD','h','w')
+colnames(y) <- shortNames
+z=scale(y)
+z=as.data.frame.matrix(z)
+fit <- efa(data=z,rotation='varimax',nfactors=1:5)
+summary(fit)
+```
+
+##
+```{r,echo=T}
+lavaanPlot(model = fit[[2]], coefs = T,covs=T)
+```
+
+## Factor Loadings (Varimax)
+
+```{r}
+par(cex=1.5)
+lambda=inspect(fit[[2]],what="std")$lambda
+plot(lambda,asp=1,ylim=c(-1,1),xlim=c(-1,1),typ='n')
+text(lambda[,1],lambda[,2],shortNames,adj=c(.5,.5))
+abline(v=0)
+abline(h=0)
+```
+
+## Rotation Issue
+
+- The critical term in FA is $\bflambda\bflambda'$.
+
+- Suppose there are two loadings $\bflambda_1$ and $\bflambda_2$ that are unique, that is $\bflambda_1 \neq \bflambda_2$.  Yet, still, $\bflambda_1\bflambda_1'=\bflambda_2\bflambda_2'$
+
+- Can it happen?  Yes.  
+
+
+- A rotation matrix $\bfA$ has the following properties:
+  + $\bfA'\bfA=\bfI=\bfA\bfA'$, $det(\bfA)=\pm 1$
+
+- $\bflambda_1\bflambda'_1 = \bflambda_1\bfI\bflambda'_1=\bflambda_1\bfA\bfA'\bflambda'_1=
+(\bflambda_1\bfA)(\bfA'\bflambda'_1)=(\bflambda_1\bfA)(\bflambda_1\bfA)'$
+
+- $\bflambda_2 = \bflambda_1\bfA$
+
+- $\bflambda_1\bflambda'_1 = \bflambda_2\bflambda'_2$
+
+  
+## PCA-Like Rotation
+
+```{r}
+rotate=function(lambda,theta){
+  rot=matrix(ncol=2,c(cos(theta),sin(theta),-sin(theta),cos(theta)))
+  return(lambda%*%rot)}
+
+err=function(theta,lambda){
+  lambdaP=rotate(lambda,theta)
+  mean(lambdaP[,2])^2}
+
+ang=optimize(f=err,interval=c(-pi,pi),lambda=lambda)$minimum
+lambdaP=rotate(lambda,ang)
+par(cex=1.5)
+plot(lambdaP,asp=1,ylim=c(-1,1),xlim=c(-1,1),typ='n')
+text(lambdaP[,1],lambdaP[,2],shortNames,adj=c(.5,.5))
+abline(v=0)
+abline(h=0)
+```
+
+## Non-Orthogonal Factor Models
+
+- Correlation among abilities across people.
+
+
+- Allow correlation among latent people abilities, $\bfphi_i$.
+\[ \begin{aligned}
+\bfZ_{i}|\bfphi_i & \sim \mbox{N}_J(\bflambda\bfphi,\;\bfI-\bfD(\bflambda\bflambda'))\\
+\bfphi_i &\sim \mbox{N}_D(\bf0,\bfpsi)
+\end{aligned}
+\]
+where $\bfpsi$ is a correlation matrix describing relations among factors.
+
+\[ \begin{aligned}
+\bfZ_{i} &\sim \mbox{N}_J(\bfzero,\; \bfrho)\\
+\bfrho &= \bflambda\bfpsi\bflambda'+\bfI-\bfD(\bflambda\bfpsi\bflambda')
+\end{aligned}
+\]
+
+##
+
+```{r,echo=T,message=F}
+fit <- efa(data=z,nfactors=2)
+summary(fit)
+```
+
+##
+
+```{r}
+par(cex=1.5)
+lambda=inspect(fit[[1]],what="std")$lambda
+plot(lambda,asp=1,ylim=c(-1,1),xlim=c(-1,1),typ='n')
+text(lambda[,1],lambda[,2],shortNames,adj=c(.5,.5))
+abline(v=0)
+abline(h=0)
+```
+
+
+## Confirmatory Factor Model For Anthropomorphic Set
+
+- Zero out some loadings
+
+## Confirmatory Factor Model For Anthropomorphic Set
+
+```{r,echo=T}
+library(semPlot)
+model <- '
+facH  =~ h+wH+fL+hL+sH+sL
+facCW =~ w+nC+cC+wC+tC+sD'
+fit=cfa(model,data=z)
+summary(fit)
+```
+
+## Plots
+```{r,echo=T}
+semPaths(fit, "std", layout = "tree", intercepts = F, residuals = T, nDigits = 2, 
+         label.cex = 1, edge.label.cex=.95, fade = F)
+```
+
+## Full Separation!
+
+```{r}
+lambda=inspect(fit,what="std")$lambda
+plot(lambda,asp=1,ylim=c(-1,1),xlim=c(-1,1),typ='n')
+text(lambda[,1],lambda[,2],shortNames,adj=c(.5,.5))
+abline(v=0)
+abline(h=0)
+```
+
+
+
+## Your Turn
+
+Illusions Data!
+
+- 10 tasks (5 illusion types X 2 versions)
+- 138 ppl
+- score10.dat is a text file `read.table(...)`
+- Please factor analyze using lavaan
+
+## Your Turn
+
+Illusions Data!
+
+- suppose we are uninterested in version correlations?
+
+

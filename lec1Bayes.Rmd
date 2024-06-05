@@ -1,0 +1,782 @@
+---
+title: "Lecture 1: Bayes and Beyond"
+author: Jeff Rouder
+date: June, 2024
+
+output:
+  beamer_presentation:
+    theme: "metropolis"
+    fonttheme: "structurebold"
+    fig_caption: false
+    incremental: false
+header-includes   :
+    - \usepackage{bm}
+    - \usepackage{amsmath}
+    - \usepackage{pcl}
+---
+
+```{r,echo=F,eval=T,warning=F,message=F}
+knitr::opts_chunk$set(echo = FALSE,message=FALSE, warning=FALSE)
+```
+
+
+
+## All Stats Begins With Probability
+
+- Probability in Two Parts:
+  + technical part for parceling probability across things
+  + the soul or meaning
+  
+## The Technical Part
+
+- $X$, sample space, set of all outcomes
+- $A$, $B$, subset of $X$, event
+- $P(A)$ is probability of $A$, how much of $X$ does it measure.
+- Kolmogorov Axioms:
+  - $P(A) \geq 0$
+  - $P(X) =1$
+  - if $A \cap B = \emptyset$ then $P(A \cup B)= P(A) + P(B)$
+- Kolmogorov Axioms describe a system of *relative weights*.
+- Everyone agrees on probability as a relative weight system that obeys the Kolmogorov Axioms 
+
+
+## Some Questions About Meaning?
+
+Flip a coin:
+
+  + Is the probability of a head the property of a coin much as the coin has properties of weight, composition, and circumference?  Alternatively, is probability a property of the observer?  Both?
+  
+  + Does the probability of a head change depending on the situation?
+  
+  + Is probability subjective or objective?
+  
+  + Can we talk about the probability of one-off events, say that the Ukraine war ends in 2025?
+  
+## Usual, Classical, Frequentist  
+
+- Probability of heads is the proportion of heads in the long-run limit of many flips.
+  + belongs to coin
+  + objective fact
+  + long-run limit is an abstraction, nonetheless useful
+
+## Bayesian
+
+- Probability is the observers belief about the plausibility of events.
+- Goal is to update rationally in light of data using Kolmogov's Axioms and the Law of Conditional Probability
+- Probability of a head:
+  + belongs to observer
+  + subjective opinion
+  + mutable
+  + no need for long-run abstraction, works always
+- Probability as wagers
+  + p=.25 (1-to-3 odds)
+  + I might wager a dollar if I win more than three. 
+
+## Bayesian Updating
+
++ Before The Bad Apple Catastrophe
+  - A: 20%
+  - B: 30%
+  - C: 50%  
++ After The Bad-Apple Catastrophe
+  - A: ?
+  - B: ??
+  - C: 0%
+  
+
+## Refresher
+
+- $Pr(A \cap B)$: joint probability.
+  + the foundation
+  + it all starts here
+- $Pr(A)$: Marginal Probability
+- $Pr(A|B)$: Conditional Probability
+
+## Refresher
+
+Joint:
+
+```{r}
+p=matrix(ncol=2,byrow=T,c(.1,.2,.3,.4))
+colnames(p)=c("A=0","A=1")
+rownames(p)=c("B=0","B=1")
+print(p)
+```
+
+Marginals For A:
+```{r}
+pA=apply(p,2,sum)
+print(pA)
+```
+
+Marginals For B:
+```{r}
+pB=apply(p,1,sum)
+print(pB)
+```
+
+## Refresher
+
+Joint:
+
+```{r}
+print(p)
+```
+
+$Pr(A|B)$:
+```{r}
+round(p/pB,2)
+```
+## Your Turn
+
+What is $Pr(B|A)$?
+
+- You need a 2-by-2 matrix of responses.
+
+## Ans
+
+$Pr(B|A)$: 
+
+```{r}
+round(t(t(p)/pA),2)
+```
+
+
+
+## Puzzler
+
+If I provided $P(A|B)$ and $P(B|A)$, could you compute $P(A \cap B)$?  
+
+- Yes / No ?
+
+- Try the above example with 2-by-2.  You have $Pr(A|B)$ and $Pr(B|A)$.  Can you compute $Pr(A\cap B)$?
+
+
+## Law of Conditional Probability
+
+Classic:
+\[
+P(A|B) = \frac{P(B|A)Pr(A)}{P(B)}
+\]
+
+Updating Version:
+\[
+P(A|B) = \left[\frac{P(B|A)}{P(B)}\right] P(A)
+\]
+
+Ratio Version:
+\[
+\frac{P(A|B)}{P(A)} = \frac{P(B|A)}{P(B)}\]
+
+
+##  Two Bayesian Orientations
+
+- Posterior orientation: 
+  + What you learn in most courses
+  + Closest to conventional statistics
+  + Benefit of Bayesian machinery without a strong Bayesian commitment
+  + Me: intellectually dangerous
+  + Most of today
+  
+- Updating Orientation
+  + Deep stuff
+  + Controversial
+  + Hard
+  + Higher plane of Bayesian consciousness
+  + I'll touch on it
+
+
+## Posterior Orientation
+
+\[
+P(\theta|Y) = \frac{P(Y|\theta)P(\theta)}{P(Y)}
+\]
+
+- Posterior: $P(\theta|Y)$
+- Prior: $P(\theta)$
+- Likelihood: $P(Y|\theta)$
+- P(Y)? : marginal probability of data
+  + uniquely Bayesian
+  + doesn't depend on $\theta$
+  + constant
+
+## Posterior Orientation
+
+\[
+\mbox{Posterior} \propto \mbox{Likelihood} \times \mbox{Prior}
+\]
+
+## Multiple Parameters
+
+![](smarties.jpg)
+
+## Kids On Smarties Take An IQ Test?
+
+Data: 100,104,105,124
+
+
+## Kids On Smarties Take An IQ Test?
+
+\[
+\begin{aligned}
+Y_i|\mu,\sigma^2 &\sim \mbox{Normal}(\mu,\sigma^2)\\
+\mu &\sim \mbox{Norma}(100,5^2)\\
+\sigma^2 &\sim \mbox{InvGamma}(1,15^2)
+\end{aligned}
+\]
+
+## My Prior
+```{r}
+par(cex=1.5)
+library(MCMCpack)
+#Show prior
+a=100
+b=5^2
+r=1
+s=15^2
+
+mu=seq(80,120,1)
+s2=seq(1^2,30^2,1)
+
+my.prior=function(mu,s2) dnorm(mu,a,sqrt(b))*dinvgamma(s2,r,s)
+prior=outer(mu,s2,my.prior)
+contour(mu,s2,prior,xlab=expression(mu),ylab=expression(sigma^2),col='darkred')
+```
+
+## Likelihood
+
+```{r}
+par(cex=1.5)
+#Show likelihood
+dat=c(105,100,124,104)
+my.like=function(mu,s2) exp(sum(dnorm(log=T,dat,mu,sqrt(s2))))
+my.like=Vectorize(my.like)
+like=outer(mu,s2,my.like)
+contour(mu,s2,like,xlab=expression(mu),ylab=expression(sigma^2),col='darkgreen')
+```
+
+## Posteiror: Multiply These, Point By Pont
+```{r}
+par(cex=1.5)
+contour(mu,s2,prior,xlab=expression(mu),ylab=expression(sigma^2),col='darkred')
+contour(mu,s2,like,xlab=expression(mu),ylab=expression(sigma^2),col='darkgreen',add=T)
+```
+
+
+## Posteiror: Multiply These, Point By Pont
+```{r}
+par(cex=1.5)
+contour(mu,s2,prior,xlab=expression(mu),ylab=expression(sigma^2),col='grey')
+contour(mu,s2,like,xlab=expression(mu),ylab=expression(sigma^2),col='grey',add=T)
+par(cex=1.5)
+#posterior
+post=prior*like
+total=sum(post)
+post=post/total #sums to 1
+contour(mu,s2,post,xlab=expression(mu),ylab=expression(sigma^2),add=T,col='darkblue',lwd=2)
+```
+
+## Marginal Posterior for $\mu$
+
+```{r}
+par(cex=1.5)
+#Marginal Distributions
+mu.post=apply(post,1,sum)
+plot(mu,mu.post,typ='l',xlab=expression(mu),ylab="Posterior Density",lwd=2)
+```
+
+## Marginal Posterior for $\sigma^2$
+
+```{r}
+par(cex=1.5)
+s2.post=apply(post,2,sum)
+plot(s2,s2.post,typ='l',xlab=expression(sigma^2),ylab="Posterior Density",lwd=2)
+```
+
+
+## Your Turn
+
+Code up the normal in stan or jags:
+
+  - do you get the same joint posterior?
+  - do you get the same marginal posteriors?
+
+
+## Many People
+
+- Example: 100 people each read 10 words.  Q: How fast does each person read?
+
+- Example data at `dat1.RDS`
+
+- Your Turn: Write a model to describe this case.  You can typeseet in Rmarkdown/Latex or just write it on paper. 
+
+```{r}
+set.seed(123987)
+I=100
+J=10
+sub=rep(1:I,each=J)
+tTheta=rnorm(I,800,200)
+y=round(rnorm(length(sub),tTheta[sub],200),1)
+dat=data.frame(sub,y)
+saveRDS(file="dat1.RDS",dat)
+ybar=tapply(y,sub,mean)
+```
+
+
+##  Many People, Fixed Effects
+
+\[
+\begin{aligned}
+Y_{ij}|\theta_i,\delta^2 &\sim\mbox{N}(\theta_i,\tau^2)\\
+\theta_i &\sim \mbox{N}(a,b)\\
+\tau^2 &\sim \mbox{InvGamma}\left(\frac{1}{2},\frac{r^2}{2}\right)
+\end{aligned}\]
+
+- $\tau^2$ describes variance within a person across trials (trial noise)
+- Settings: $a=600$, $b=400^2$, $r^2=200^2$
+
+
+- Go code this up in JAGS/stan
+- Compare to sample mean. 
+
+
+
+## Going Hierarchical
+
+\[
+\begin{aligned}
+Y_{ij}|\theta_i,\delta^2 &\sim\mbox{N}(\theta_i,\tau^2)\\
+\theta_i|\mu,\sigma^2 &\sim \mbox{N}(\mu,\sigma^2)\\
+\mu &\sim \mbox{N}(a,b)\\
+\delta^2 &\sim \mbox{InvGamma}\left(\frac{1}{2},\frac{r_w^2}{2}\right)\\
+\sigma^2 &\sim \mbox{InvGamma}\left(\frac{1}{2},\frac{r_b^2}{2}\right)\\
+\end{aligned}\]
+
+- Settings: $a=600$, $b=400^2$, $r_w^2=r_b^2=200^2$
+
+
+- Go code this up in JAGS/stan
+- Compare to sample mean. 
+
+## Bayes Estimates
+
+
+```{r,include=F}
+require(R2jags)
+```
+
+```{r,include=F}
+norm.mod="
+model{
+  mu ~ dnorm(a,1/b)
+  sig2 ~ dgamma(.5,.5*rb)
+  tau2 ~ dgamma(.5,.5*rw) 
+  for (i in 1:I){
+    theta[i] ~ dnorm(mu,1/sig2)}
+  for (n in 1:N){
+    y[n]~dnorm(theta[sub[n]],1/tau2)}
+}
+"
+
+runNorm=function(dat,M=2000){
+  setup=list(
+    "y"=dat$y,
+    "sub"=dat$sub,
+    "I"=max(dat$sub),
+    "N"=length(dat$sub))
+  pars=c("theta")
+  prior=list("a"=400,"b"=600^2,"rb"=200^2,"rw"=200^2)
+  out=jags(data=c(setup,prior), 
+           parameters=pars, 
+           model.file = textConnection(norm.mod), 
+           n.chains=1,n.iter=M,n.burnin=M/10,n.thin=1)
+  return(out$BUGSoutput$sims.list$theta)
+}
+theta=runNorm(dat)
+```
+
+```{r}
+par(cex=1.5)
+plot(ybar,apply(theta,2,mean))
+abline(0,1)
+```
+## Up To Now...
+
+
+Bayes' Rule:
+\[
+\pi(\theta|Y) = \frac{p(Y|\theta)\pi(\theta)}{p(Y)}.
+\]
+
+Proportional Form:
+\[
+\pi(\theta|Y) \propto l(\theta;Y) \times \pi(\theta),
+\]
+
+## Critique
+
+Problems:
+
+- No sense of what $p(Y)$ means
+- Stress posterior rather than the process of updating.  
+- Strive to minimize influence of priors.  
+- Separation of estimation and model comparison.
+
+##  Ratio Form of Bayes Rule
+
+Solution, restate Bayes Rule as follows:
+
+\[
+\frac{\pi(\theta|Y)}{\pi(\theta)} = \frac{p(Y|\theta)}{p(Y)}.
+\]
+
+And study what this equation means!
+
+## For Our Example
+
+- 7 successes in 10 trials
+
+## Left-Hand Side
+
+- Bayes Rule:
+\[
+\frac{\pi(\theta|Y)}{\pi(\theta)} = \frac{p(Y|\theta)}{p(Y)}
+\]
+
+- Left-Hand Side:
+\[
+\frac{\pi(\theta|Y)}{\pi(\theta)}\]
+
+##
+
+```{r, echo=F}
+cval=c('darkgreen','darkblue','black','darkred')
+
+myTheta1=.75
+myTheta2=.3
+
+Y=7
+N=10
+a=2.5
+b=1
+theta=seq(0,1,.01)
+prior=dbeta(theta,a,b)
+post=dbeta(theta,Y+a,N-Y+b)
+par(cex=1.5)
+plot(theta,post,type='l',ylab="Density",xlab=expression(theta),col=cval[1],lwd=2)
+lines(theta,prior,type='l',col=cval[2],lwd=2,lty=2)
+points(myTheta1,dbeta(myTheta1,a,b),pch=19,cex=1.5,col=cval[2])
+points(myTheta1,dbeta(myTheta1,Y+a,N-Y+b),pch=19,cex=1.5,col=cval[1])
+points(myTheta2,dbeta(myTheta2,a,b),pch=21,lwd=2,cex=1.5,col=cval[2],bg="white")
+points(myTheta2,dbeta(myTheta2,Y+a,N-Y+b),pch=21,lwd=2,cex=1.5,col=cval[1],bg="white")
+
+legend(0,2,c("Posterior","Prior"),lwd=2,lty=1:2,col=cval[1:2])
+mtext(side=3,adj=0,line=0,cex=1.3,"Left-Hand Side Components")
+```
+
+## 
+
+```{r, echo=F}
+par(cex=1.5)
+update=function(theta,Y,N,a,b) dbeta(theta,Y+a,N-Y+b)/dbeta(theta,a,b)
+plot(theta,update(theta,Y,N,a,b),typ='l',lwd=2,ylab="Updating Factor\nStrengh of Evidence",xlab=expression(theta))
+abline(h=1,col="grey")
+points(myTheta1,update(myTheta1,Y,N,a,b),pch=19,cex=1.5,col="black")
+points(myTheta2,update(myTheta2,Y,N,a,b),pch=21,lwd=2,cex=1.5,col="black",bg="white")
+mtext(side=3,adj=0,line=0,cex=1.3,"Left Hand Side, Evidence")
+```
+
+## Right-Hand Side
+
+- Bayes Rule:
+\[
+\frac{\pi(\theta|Y)}{\pi(\theta)} = \frac{p(Y|\theta)}{p(Y)}
+\]
+
+- Right-Hand Side:
+\[
+\frac{p(Y|\theta)}{p(Y)}
+\]
+
+- $p(Y|\theta)$: Conditional Predictive Accuracy
+- $p(Y)$: Marginal Predictive Accuracy
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+vals=0:N
+plot(vals,dbinom(vals,N,myTheta1),typ='h',xlab="No. of Heads",ylab="Conditional Probability",ylim=c(0,.3))
+text(1,.2,expression(theta==.75),cex=1.0,adj=0)
+points(7,dbinom(7,N,myTheta1)+.02,pch="*",cex=1.3)
+mtext(side=3,adj=0,line=0,cex=1.3,"Right Hand Numerator, Conditional Prediction at theta=.75")
+```
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+plot(vals,dbinom(vals,N,myTheta2),typ='h',xlab="No. of Heads",ylab="Conditional Probability",ylim=c(0,.3))
+text(7,.2,expression(theta==.30),cex=1.0,adj=0)
+points(7,dbinom(7,N,myTheta2)+.02,pch="*",cex=1.3)
+mtext(side=3,adj=0,line=0,cex=1.3,"Right-Hand Numerator, Prediction at theta=.3")
+```
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+intgrand=function(theta,y,N,a,b) dbinom(y,N,theta)*dbeta(theta,a,b)
+pdata=integrate(lower=0,upper=1,intgrand,y=Y,N=N,a=a,b=b)$value
+
+p=1:(N+1)
+for (v in vals)
+p[v+1]=integrate(lower=0,upper=1,intgrand,y=v,N=N,a=a,b=b)$value
+
+plot(vals,p,typ='h',xlab="No. of Heads",ylab="Marginal Probability",ylim=c(0,.3))
+points(7,p[8]+.02,pch="*",cex=1.3)
+mtext(side=3,adj=0,line=0,cex=1.3,"Right Hand Denominator: Marginal Prediction")
+```
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+intgrand=function(theta,Y,N,a,b) dbinom(Y,N,theta)*dbeta(theta,a,b)
+pdata=integrate(lower=0,upper=1,intgrand,Y=Y,N=N,a=a,b=b)$value
+plot(theta,dbinom(Y,N,theta),typ='l',lwd=2,xlab=expression(theta),ylab="Pr(7 Heads in 10 Flips)",col=cval[3])
+abline(h=pdata,col=cval[4],lwd=2,lty=2)
+
+points(myTheta1,dbinom(Y,N,myTheta1),pch=19,cex=1.5,col=cval[3])
+points(myTheta1,pdata,pch=19,cex=1.5,col=cval[4])
+points(myTheta2,dbinom(Y,N,myTheta2),pch=21,lwd=2,cex=1.5,col=cval[3],bg="white")
+points(myTheta2,pdata,pch=21,lwd=2,cex=1.5,col=cval[4],bg="white")
+
+legend(0,.25,c("Conditional","Marginal"),lwd=2,lty=1:2,col=cval[3:4])
+mtext(side=3,adj=0,line=0,cex=1.3,"Accuracy")
+```
+
+##
+
+```{r, echo=FALSE}
+par(cex=1.5)
+plot(theta,update(theta,Y,N,a,b),typ='l',lwd=2,ylab="Gain In Predictive Accuracy",xlab=expression(theta))
+abline(h=1,col="grey")
+points(myTheta1,update(myTheta1,Y,N,a,b),pch=19,cex=1.5,col="black")
+points(myTheta2,update(myTheta2,Y,N,a,b),pch=21,lwd=2,cex=1.5,col="black",bg="white")
+mtext(side=3,adj=0,line=0,cex=1.3,"Accuracy Gain or Loss")
+```
+
+##
+
+Evidence for a point is the degree to which it improves the prediction for the observed data.
+
+- "Evidence = Prediction"
+
+- way catchier than "Posterior is Proportional To The Likelihood Times The Prior"
+
+
+## Your Turn: Which is the better parameter value?
+
+
+- A coin has probability either $\theta=1/3$ or $\theta=2/3$.  
+
+- We observe $Y$ out of $N$ successes.  
+
+- Q: What is the relative evidence of $\theta=1/3$ vs. $\theta=2/3$
+
+## Need a Hint?
+
+Compute 
+\[
+\frac{\frac{\pi(\theta_1|Y)}{\pi(\theta_1)}}{\frac{\pi(\theta_2|Y)}{\pi(\theta_2)}} 
+\]
+
+- where $\theta_1=1/3$ and $\theta_2=2/3$.
+- derive generally and then put in values.
+
+
+
+## Fair Coin?
+
+We have observed 7 of 10 successes.  What is the evidence for a fair coin?
+
+General Model, Model $M_a$
+\[
+\begin{aligned}
+Y \mid \theta &\sim \mbox{Binomial}(\theta,N),\\
+\theta &\sim \mbox{Uniform}(0,1).
+\end{aligned}
+\]
+
+Fair-Coin Model, Model $M_b$:
+\[
+Y \sim \mbox{Binomial}(.5,N).
+\]
+
+Bayes Rule:
+\[
+\frac{\frac{\pi(M_a|Y)}{\pi(M_a)}}{\frac{\pi(M_b|Y)}{\pi(M_b)}} = \frac{\frac{p(Y|M_a)}{p(Y)}}{\frac{p(Y|M_b)}{p(Y)}}=\frac{p(Y|M_a)}{p(Y|M_b)} = B_{ab}.
+\]
+
+##  Fair Coin Prediction
+\[
+Pr(Y=y) = \binom{N}{y} .5^y,5^{(N-y)}
+\]
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+pdata0=dbinom(0:10,10,.5)
+plot(0:10,pdata0,typ='h',ylim=c(0,.3),xlab="Outcome (# Heads of 10 Flips)",ylab="Pr(Outcome)")
+points(0:10,pdata0,pch=19)
+mtext("Fair Coin Model, Prediction",side=3,line=-2,adj=.1,cex=1.6)
+abline(h=0,col="gray",lwd=.5)
+```
+
+## General Model Prediction
+\[
+Pr(Y=y) = \int_0^1 \binom{N}{y} \theta^y,(1-\theta)^{(N-y)}\; d\theta
+\]
+
+
+
+##
+
+
+```{r, echo=F}
+par(cex=1.5)
+pdata1=rep(1/11,11)
+plot(0:10,pdata1,typ='h',ylim=c(0,.3),xlab="Outcome (# Heads of 10 Flips)",ylab="Pr(Outcome)")
+points(0:10,pdata1,pch=19)
+mtext("General Model, Prediction",side=3,line=-2,adj=.1,cex=1.6)
+abline(h=0,col="gray",lwd=.5)
+```
+
+
+
+##
+
+```{r, echo=F}
+par(cex=1.5)
+rat=pdata1/pdata0
+plot(0:10,log10(rat),typ='h',axes=F,ylim=c(-1,2),xlab="Outcome (# Heads of 10 Flips)",ylab=expression(paste("Bayes Factor ",B[AB])))
+points(0:10,log10(rat),pch=19)
+abline(0,0)
+axis(1)
+axis(2,at=-1:2,label=c(.1,1,10,100))
+mtext("Ratio of Predictions",side=3,line=-2,adj=.1,cex=1.6)
+```
+
+## Spike and Slab Priors
+
+I have a coin in my hand.  It has a true probability of heads of $\theta$.  I am going to flip it 1000 times.  Guess how many heads of 1000.  Let's call your guess $G$, let's flip it for $Y$ heads.  Your error is $e=G-Y$ and I am going to pay you $\max(0,10000-e^2)$, so guess good.  Now, to make this fair I am going to show flip the coin 1000 times twice.  The first time of 1000 flips is to help you formulate your guess; the second time of 1000 flips is for the money.
+
+- if there is 743 of 1000 initially, what is your guess?
+- if there are 510 of 1000 initially, what is your guess?
+
+
+## Spike and Slab Priors
+
+\[
+\begin{aligned}
+Y_0&\sim \mbox{Binomial}(\theta,1000)\\
+(\theta \mid \eta=0) & = .5\\
+(\theta \mid \eta=1) & \sim \mbox{Unif}(0,1)\\
+\eta & \sim \mbox{Bernoulli}(.5)
+\end{aligned}
+\]
+
+## Spike and Slab, Probabilities
+
+\[
+\begin{aligned}
+BF_{01}=\frac{\Pr(\eta=0|Y)}{\Pr(\eta=1|Y)} &= \frac{\Pr(Y|\eta=0)}{\Pr(Y|\eta=1)} \times \frac{Pr(\eta=0)}{Pr(\eta=1)}\\
+&= \frac{\Pr(Y|\eta=0)}{\Pr(Y|\eta=1)}\\
+&= 1001 \times {N \choose Y}\times.5^N
+\end{aligned}
+\]
+
+- $\Pr(\eta=0|Y)=BF_{01}/(BF_{01}+1)$
+- $\Pr(\eta=1|Y)=1-\Pr(\eta=0|Y)$
+
+##
+
+```{r}
+par(cex=1.5)
+Y=400:600
+BF01=1001*dbinom(Y,1000,.5)
+p0=BF01/(1+BF01)
+p1=1-p0
+plot(Y,p1,typ='l')
+```
+
+## Estimates, Posterior Mean
+\[ \begin{aligned}
+E(\theta \mid Y) = &E(\theta \mid Y,\eta=0) \times \Pr(\eta=0 \mid Y) +\\ 
+& E(\theta \mid Y,\eta=1) \times \Pr(\eta=1 \mid Y).\\
+E(\theta \mid Y)= &.5\times \Pr(\eta=0 \mid Y) +\\ &\frac{Y+1}{1002}\times\Pr(\eta=1\mid Y)
+\end{aligned}
+\]
+
+##
+
+```{r}
+par(cex=1.5)
+E=.5*p0+p1*(Y+1)/(1002)
+plot(Y,E,typ='l',ylab="Posterior mean")
+lines(Y,Y/1000,lty=2)
+```
+
+## JAGS spike and slab code
+
+```{r,echo=T,eval=F}
+spikeSlab.mod<-"
+model{
+eta ~ dbern(.5)
+theta ~ dunif(ifelse(eta==0,.499,0),
+              ifelse(eta==0,.501,1))
+Y ~ dbinom(theta,1000)}
+"
+```
+
+
+
+
+```{r,echo=F,eval=F}
+out <-jags(data=list("Y"=510),
+           parameters=c("theta","eta"),
+           model.file = textConnection(spikeSlab.mod), 
+           n.chains=1,n.iter=2000,n.burnin=200,n.thin=1)
+theta=out$BUGSoutput$sims.list$theta
+eta=out$BUGSoutput$sims.list$eta
+```
+
+## Spike and Slab in Modern Regression
+
+Let $Y_n$ be an observation, $i=1,\ldots,N$.  Here is a linear model for $R$ covariates:
+\[
+Y_n = \mu +X_{1n}\alpha_1+ \ldots + X_{Rn}\alpha_R +\epsilon_{n} 
+\]
+Suppose $R$ is large, potentially $R\gg N$.  Yet, we know, several $\alpha$'s are at or near zero.
+
+\[
+\begin{aligned}
+(\alpha_r \mid \eta_r=0) & = 0\\
+(\alpha_r \mid \eta_r=1) & \sim \mbox{Normal}(0,b)\\
+\eta_r & \sim \mbox{Bernoulli}(\pi)\\
+\pi & \sim \mbox{Beta}(c,d)
+\end{aligned}
+\]
+
+- Potential to zero out many, many coefficients.
+- VSS (variable selection search)
+
+## Adaptive Priors
+
+Modern shrinkage is *adaptive* and, in the Bayesian case, reflects mixture priors where the mixture is over different models (or different priors, it's all the same).
+
+- Spike and slab is a dichotomous mixture
+- Lasso is a continuous mixture
+

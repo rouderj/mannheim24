@@ -1,0 +1,558 @@
+
+
+
+## The 1956/1957 Cronbach Proposal
+
+\begin{columns}
+\begin{column}{6cm}
+\includegraphics[width=5cm]{cronbach}
+\end{column}\begin{column}{6cm}
+\begin{itemize}
+\item Differential Psychology: Individual Differences, Psychometrics
+\item Experimental Psychology: Search for Mechanisms, Controlled Experiments
+\item Why don't we combine them?
+\item We have, especially in cognitive control, learning, and attention:
+\item <2-> \textcolor{red}{What a fiasco!}
+\end{itemize}
+\end{column}
+\end{columns}
+
+## Example of Differential Psychology w/ Experiments
+
+- Cognitive Control
+- Ability to inhibit prepotent responses
+- Stroop experiment
+- Flanker experiment
+
+## Stroop Has Two Conditions
+
+- Name the color of the word.
+
+- Congruent: \textcolor{red}{RED} \textcolor{blue}{BLUE}
+
+- Incongruent: \textcolor{blue}{RED} \textcolor{red}{BLUE}
+
+- Score = Incongruent - Congruent
+
+- Score is ability to control prepotent response from reading
+
+- Contrast offers control of all processes in common.
+
+## Flanker Has Two Conditions
+
+- What is the center letter?
+
+- Congruent: HHHHH AAAAA
+- Incongruent: AAHAA HHAHH
+- Score = Incongruent - Congruent
+
+- Score is ability to control prepotent response from flanking letters
+
+- Contrast offers control of all processes in common.
+
+## Usual Analysis
+
+![](dataAnalysis.jpg)
+
+## 
+
+What Could Go Wrong?
+
+  - a lot
+  - and its going to take some time
+  
+## Setup for One Task
+
+- $Y_{ik\ell}$: Observation (response time)
+- $i=1,\ldots,I$: Individual
+- $k=1,2$: Condition (congruent/incongruent)
+- $\ell=1,\ldots,L$: Replicate
+- Data Model: \[
+Y_{ik\ell} \sim \mbox{Normal}(\alpha_{i}+x_k\theta_{i},\sigma^2) 
+\]
+- where $x_k=-1/2,1/2$ for congruent and incongruent trials, respectively.
+- $\theta_{i}$ is *true effect* for $i$th person
+
+- Random Effects:
+\[
+\theta_i \sim \mbox{Normal}(\nu,\delta^2)
+\]
+
+## Model For scores
+
+
+- Condition Mean:  $\bar{Y}_{ik}= \left(\sum_\ell Y_{ik\ell}\right)/L$
+- Score: $d_{i}= \bar{Y}_{i2}-\bar{Y}_{i1}$
+
+\[
+d_i \sim \mbox{Normal}(\nu,\delta^2+2\sigma^2/L)
+\]
+
+Upshot:
+
+- Mean score estimate $\nu$
+
+- Variance of scores does **not** estimate $\delta^2$
+
+- Variance of scores estimates $\delta^2+2\sigma^2/L$
+
+## Trial Noise Affects Correlations
+
+- Suppose Task 1 and Task 2 are perfectly correlated.
+- All that differs is the trial noise
+- Let $j=1,2$ denote task
+- $Y_{ijk\ell} \sim \mbox{Normal}(\alpha_i+x_k\theta_i,\sigma^2)$
+- Score: $d_{ij}= \bar{Y}_{ij2}-\bar{Y}_{ij1}$
+
+## Trial Noise Affects Correlations
+
+\[
+\begin{pmatrix}d_{i1}\\d_{i2}\end{pmatrix} 
+\sim \mbox{N}_2  \left[
+\begin{pmatrix} \nu\\ \nu \end{pmatrix},
+\begin{pmatrix}\delta^2+2\sigma^2/L & \delta^2\\ \delta^2 &\delta^2+2\sigma^2/L
+\end{pmatrix}\right]
+\] 
+
+- $r = \mbox{Cor}(d_{i1},d_{i2})$
+- $r$ estimates:
+\[
+E(r) \approx \frac{\delta^2}{\delta^2+2\sigma^2/L}
+\]
+
+- correlation increases from 0 to 1 with $L$ (trial size).
+- correlation depends on $\delta^2$, $\sigma^2$, $L$.
+
+## How Good Is A Task?
+
+\[
+\gamma^2 = \frac{\delta^2}{\sigma^2}\]
+
+- Signal-to-noise ratio of a task.
+
+- \[ E(r) \approx \frac{\gamma^2}{\gamma^2+2/L}\]
+
+
+- I am also going to use $\gamma=\sqrt{\gamma^2}$ as the signal-to-noise ratio.  Use context
+
+## Attenuation of Correlation as A Function of $\gamma^2$
+
+
+```{r}
+plot.fidelity=function(){
+  Ffun=function(eta2,L) L/(L+2/eta2)
+  L=as.vector(outer(seq(.5,9.5,.5),10^(1:3)))
+  L1=as.vector(outer(1:9,10^(1:3)))
+  eta2=c(1,.5,.2,.1,.05,.02,.01,.005)
+  f=t(outer(eta2,L,Ffun))
+  matplot(log10(L),f,axes=FALSE,ylab="Multiplier",
+        typ='l',lty=1,lwd=3,col=rainbow(8,s=1,v=.8),
+        xlab="Replicate Trials, L")
+  points(log10(100),.42,pch=19,cex=2)
+  axis(1,at=log10(L1),lab=NA)
+  axis(1,at=1:4,label=10^(1:4))
+  axis(2)
+  box()
+  legend(3.3,.85,eta2,fill=rainbow(8,s=1,v=.8),title=expression(gamma^2),bg='white')
+}
+
+par(cex=1.6)
+plot.fidelity()
+```
+
+
+## How Big is the Signal-To-Noise ($\gamma$) Experiments
+
+![](gamma.png)
+
+## How Big is the Signal-To-Noise in Experiments
+
+- Average effect: $\approx$ 60 ms
+- Average $\sigma$: $\approx$ 200 ms
+- Average $\delta$: $\approx$ 25 ms
+- $\gamma$: 1-in-8 (.125)
+- $\gamma^2$: .0156
+
+
+
+
+## Quick Simulation
+
+- Two tasks
+- 200 people
+- 100 replicates per person per task per condition
+- $\gamma=$ 1-to-7 (somewhat optimistic case)
+
+##
+
+```{r}
+resa=read.table('twoTaskSimResults',head=T)
+load("twoWish.Rdata")
+res=cbind(resa,apply(cor,2,mean))
+myCol=c(rgb(.8,0,0,.3),rgb(0,.4,0,.3),rgb(0,0,.8,.3))
+myColSat=c(rgb(1,0,0),rgb(0,.5,0),rgb(0,0,1))
+par(mar=c(4,4,1,1),mgp=c(2,.7,0),cex=1.5)
+small=res[,1]==.2
+med=res[,1]==.5
+large=res[,1]==.8
+x=rep(c(1,5,9,2,6,10,3,7,11),each=100)
+y=res[,3:5]
+par(cex=1.5)
+plot(jitter(x),as.matrix(y),pch=19,col=rep(myCol,each=300),axes=F,
+     ylab="Posterior Means",xlab="",typ='n')
+axis(2)
+axis(1,at=c(1,3),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".2"), side = 1, at = 2, line = .7,cex=1.5)
+axis(1,at=c(5, 7),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".5"), side = 1, at = 6, line = .7,cex=1.5)
+axis(1,at=c(9, 11),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".8"), side = 1, at = 10, line = .7,cex=1.5)
+segments(.5,.2,3.5,.2,lwd=2)
+segments(4.5,.5,7.5,.5,lwd=2)
+segments(8.5,.8,11.5,.8,lwd=2)
+```
+
+## Two Tasks (Usual)
+```{r}
+par(cex=1.5)
+plot(jitter(x),as.matrix(y),col=rep(myCol,each=300),axes=F,pch=19,
+     ylab="Posterior Means",xlab="",cex=rep(c(1,0,0),each=300))
+axis(2)
+axis(1,at=c(1,3),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".2"), side = 1, at = 2, line = .7,cex=1.5)
+axis(1,at=c(5, 7),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".5"), side = 1, at = 6, line = .7,cex=1.5)
+axis(1,at=c(9, 11),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".8"), side = 1, at = 10, line = .7,cex=1.5)
+segments(.5,.2,3.5,.2,lwd=2)
+segments(4.5,.5,7.5,.5,lwd=2)
+segments(8.5,.8,11.5,.8,lwd=2)
+par(xpd=NA)
+legend(9.5,.2,fill=myColSat[1],legend=c("Usual","Spearman","Model")[1], bty = "n", cex = .9)
+#par(xpd=F)
+```
+
+
+## Two Tasks (Usual+Spearman)
+
+```{r}
+par(cex=1.5)
+plot(jitter(x),as.matrix(y),col=rep(myCol,each=300),axes=F,pch=19,
+     ylab="Posterior Means",xlab="",cex=rep(c(1,1,0),each=300))
+axis(2)
+axis(1,at=c(1,3),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".2"), side = 1, at = 2, line = .7,cex=1.5)
+axis(1,at=c(5, 7),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".5"), side = 1, at = 6, line = .7,cex=1.5)
+axis(1,at=c(9, 11),lab=c("",""))
+mtext(expression(rho ~ "=" ~ ".8"), side = 1, at = 10, line = .7,cex=1.5)
+segments(.5,.2,3.5,.2,lwd=2)
+segments(4.5,.5,7.5,.5,lwd=2)
+segments(8.5,.8,11.5,.8,lwd=2)
+par(xpd=NA)
+legend(9.5,.2,fill=myColSat[1:2],legend=c("Usual","Spearman","Model")[1:2], bty = "n", cex = .9)
+par(xpd=F)
+```
+
+
+
+
+
+
+```{r}
+J=6
+lambda=matrix(nrow=1,ncol=J,0)
+lambda[1,]=seq(.35,.75,length=J)
+facContrib=(crossprod(lambda))
+varFromFac=diag(facContrib)
+Sigma=facContrib+diag(max(varFromFac)-varFromFac)+.5*diag(J)
+rho1=cov2cor(Sigma)
+#corrplot(rho1)
+
+lambda=matrix(nrow=2,ncol=J,0)
+lambda[1,]=rep(1,J)*.5
+lambda[2,]=rep(c(1,-1),each=3)*.5
+facContrib=(crossprod(lambda))
+varFromFac=diag(facContrib)
+Sigma=facContrib+diag(max(varFromFac)-varFromFac)+.5*diag(J)
+rho2=cov2cor(Sigma)
+#corrplot(rho2)
+
+lambda=matrix(nrow=2,ncol=J,0)
+bibble=seq(.15,.35,length=3)
+lambda[1,]=c(bibble,rev(1-bibble))
+lambda[2,]=rev(lambda[1,])
+facContrib=(crossprod(lambda))
+varFromFac=diag(facContrib)
+Sigma=facContrib+diag(max(varFromFac)-varFromFac)+.25*diag(J)
+rho3=cov2cor(Sigma)
+#corrplot(rho3)
+```
+
+```{r}
+library('corrplot')
+load('pca.RData')
+
+screePlot=function(ind,iNum=3,let=''){
+  J=length(ind$scree[1,1,])-1
+  top=max(ind$scree[iNum,1:50,1:J])
+  matplot(1:J,t(ind$scree[iNum,1:50,1:J]),typ='l',
+          col=rgb(0,0,0,.1),lty=1,ylim=c(0,top),
+          xlab="Factor",ylab="Prop. of Variance")
+  mtext(side=3,adj=0,cex=1.2,let)
+}
+
+
+correctPlot=function(ind,targ,let=''){
+  p=tapply(ind$win$dim==targ,ind$win$I,mean)
+  I=unique(ind$win$I)
+  plot(log2(I),p,typ='l',axes=F,
+       xlab="Number of People",
+       ylab="Correct Dimensionality",ylim=c(0,1))
+  axis(2,at=c(0,.5,1))
+  axis(1,at=log2(I),lab=I)
+  abline(h=.8,col="lightblue")
+  mtext(side=3,adj=0,cex=1.1,let)}
+```
+## Can I recover structure with small signal-to-noise?
+
+```{r}
+par(mfcol=c(1,3),cex=1.5)
+corrplot(rho2,method="color",cl.pos='b',tl.pos='d',tl.col='black',col.lim=c(0,1),cl.ratio = .2,cl.length=2,addgrid.col = 'black' )
+par(pty='m',mar=c(4,4,1.5,1),mgp=c(1.7,.7,0))
+screePlot(fac2$true)
+correctPlot(fac2$true,targ = 2)
+```
+
+## Can I recover structure with small signal-to-noise?
+```{r}
+
+plotExp=function(exp,leg=F,leg.x=200,leg.y=.5,txt=''){
+  I=unique(exp$I)
+  L=unique(exp$L)
+  mycol=c("darkred","darkgreen","black")
+  m=tapply(exp$p,list(exp$I,exp$L),mean)
+  matplot(log2(I),m,axes=F,typ='b',pch=19,
+        col=mycol,lty=1,lwd=2,
+        xlab="Number of People",
+        ylab="Proportion Recovered",
+        ylim=c(0,1))
+  axis(2,at=c(0,.5,1))
+  axis(1,at=log2(I),labels=I)
+  abline(h=.8,col='lightblue')
+  if (leg) {
+    par(xpd=T)
+    legend(x=log2(leg.x),y=leg.y,title="Trials",legend=L,
+                  col=mycol,lwd=2,pch=19,bg='antiquewhite')
+    par(xpd=F)}
+  mtext(side=3,adj=.5,txt,line=-.5)
+}
+```
+
+```{r}
+par(cex=1.5)
+plotExp(fac1$e2,leg=T,leg.x=120,leg.y=1)
+```
+
+## Approach To Understanding
+
+a. build a Bayesian hierarchical model
+b. use linear model to model data
+c. use factor model as a prior on individual abilities
+d. I dont have all the details, but I can get close
+
+## Trial-Noise Factor Models
+
+Top Level:
+\[
+Y_{ijk\ell}|\theta{ij} \sim
+\mbox{N}(\alpha_{ij}+x_k\sigma_j\theta_{ij},\;\sigma^2_j)
+\]
+
+Next:
+\[
+\bftheta_i=\begin{pmatrix} \theta_{i1}\\ \vdots \\ \theta_{iJ} \end{pmatrix}
+\]
+
+Most General:
+\[
+\bftheta_i \sim \mbox{N}_J(\bfnu,\bfSigma)
+\]
+
+Factor Model Constraint:
+\[
+\bftheta_i |\bfphi_i \sim \mbox{N}_J(\bfnu+\bflambda\bfphi,\bfD(\bfsigma^2))
+\]
+
+
+
+## 
+
+- I have no clue how to implement such a model in a frequentist domain. 
+
+- Do NOT try in Lavaan, MPLUS, etc.
+  + there are 100K + observations and each will have a node
+  + you will get tired of coding 100K+ variables into the model statement
+  
+- Bayes is great for models with many levels defined conditionally
+  
+
+## JAGS Implementation of a One-Factor Backend
+
+All Normals Are Defined as $\mbox{N}(\mu,1/\sigma^2)$, With That Notation
+
+\[\begin{aligned}
+Y_{ijk\ell}|\theta_{ij} &\sim \mbox{N}(\alpha_{ij}+x_k\theta_{ij},\;p(\sigma^2))\\
+\theta_{ij}|\phi_i &\sim \mbox{N}(\nu_j+\lambda_j\phi_i,\;p(\delta^2_j)) \\\
+\phi_i&\sim\mbox{N}(0,1)
+\end{aligned}
+\]
+
+## JAGS Implementation of a One-Factor Backend
+```{}
+ model{
+  for (n in 1:N){
+    center[n]=alpha[sub[n],task[n]]+
+      (cond[n]-1.5)*theta[sub[n],task[n]]
+    y[n]~dnorm(center[n],pSig)}
+  for (i in 1:I){
+    for (j in 1:J){
+      theta[i,j] ~ dnorm(
+          nu[j]+lambda[j]*phi[i],
+          pDel[j])}}  
+          
+(and more)
+```
+
+## Does It Work?
+
+- 4 tasks follow a one factor model
+- Truth $\lambda_j$ = (5ms, 11ms, 16ms, 22ms)
+- Correlation Matrix:
+
+## Does It Work?
+
+```{r}
+source('simLib.R')
+J=4
+I=200
+makeThetaOneFac=function(I,J,tLambda,tDelta){
+  mu = rep(.05,J)
+  cov=crossprod(t(tLambda))+diag(tDelta^2)
+  cor=cov2cor(cov)
+  vals=rmvnorm(I,mu,cov)
+  return(list(mu=mu,tLambda=tLambda,tDelta=tDelta,cor=cor,cov=cov,vals=vals))}
+tLambda=seq(.005,.022,length=J)
+tDelta=.03-tLambda
+rho=makeThetaOneFac(I,J,tLambda,tDelta)$cor
+corrplot(rho,method="color",cl.pos='b',tl.pos='d',tl.col='black',col.lim=c(0,1),cl.ratio = .2,cl.length=2,addgrid.col = 'black' )
+```
+  
+## Does It Work?
+
+- Generate Data
+  + 100 ppl
+  + 100 trials
+  + $\gamma=.15$
+ 
+  
+## Does It Work?
+```{r}
+load('sim6.Rdata')
+R=length(result)
+V=dim(result[[1]])
+out=array(dim=c(R,V))
+for (r in 1:R) out[r,,]=result[[r]]
+o=order(out[1,1,])
+
+xMat=matrix(nrow=r,ncol=6,rep(o,c(R,R,R,R,R,R)))
+
+plot(typ='n',1:6,rep(0,6),ylim=c(-.3,1.4),xlim=c(0,7))
+x1=1:6 -.5
+x2=1:6 +.5
+y1=out[1,1,o]
+y2=y1
+segments(x1,y1,x2,y2)
+points(xMat-.3,out[,2,],col=rgb(0,0,0,.1),pch=19)
+points(xMat-.15,out[,3,],col=rgb(1,0,0,.1),pch=19)
+points(xMat,out[,4,],col=rgb(0,0,1,.1),pch=19)
+points(xMat+.15,out[,6,],col=rgb(0,.5,.5,.1),pch=19)
+points(xMat+.3,out[,7,],col=rgb(0,.4,0,.1),pch=19)
+
+abline(h=1,col='lightblue')
+
+```
+
+
+  
+## How To Do Bayes CFA / SEM
+
+![](merkle.jpg)
+
+- Meet Ed
+- Ed knows estimating FA is hard.\\  Trade-off between $\bfpsi$ and $\bflambda\bflambda'$
+- Ed has been working out all the sampling tricks
+
+## Ed's Essential Tension
+
+For the FA part:
+
+1. If you stay conditional, you have many more parameters and things trade.  Sampling is fast because drawing from the univariate normal is quick
+
+2. If you go marginal, you reduce tradeoff.  But, sampling is painfully more low because sampling multivariate normals is slow.
+
+## Ed's Blavaan
+
+- easy to install
+- syntax is **exactly the same** as lavaan
+- you choose:
+  + conditional form through JAGS
+    + some nice reparameterizations to aid in mixing
+  + marginal form through stan
+    + super wizardry above my abilities
+- translate lavaan syntax to JAGS or stan (your choice)
+- implements all the best tricks for parameterization and sampling.
+- you can see what it did!
+- no panacea, still lots of issues, best we can do 2023
+
+
+## Anthropomorphic Data
+```{r}
+link <- 'https://raw.githubusercontent.com/rouderj/uciPsych10A-F21/main/anthro.dat'
+dat <- read.table(url(link),head=T)
+y=dat[,1:12]/10
+corrplot(cor(y),order='hclust',method='color')
+```
+
+## Anthropomorphic Data
+```{r,echo=T,cache=T,include=T,eval=F}
+library(blavaan)
+
+shortNames<-c('wH','fL','hL','sH','sL','nC','cC','wC','tC','sD','h','w')
+colnames(y) <- shortNames
+z=scale(y)
+
+model <- '
+facH  =~ 1*h +wH+fL+hL+sH+sL+nC
+facCW =~ 1*w+nC+cC+wC+tC+sD'
+fitJ <- bcfa(model,data=z,mcmcfile = T,target="jags")
+fitS <- bcfa(model,data=z,mcmcfile = T,target="stan")
+```
+
+
+## Take Home
+
+- Two Bayesian Orientations
+  + posterior
+  + updating
+  
+- Latent Variable Modeling
+  + Convenient approach express observables as independent conditional on latent variables
+  + Marginal model on observables has covariation
+  + Relations among latent variable is often of theoretical interest
+  
+- Bayes and LVM
+  + natural because Bayes can be analyzed in fully conditional form w/o any marginalizing
+  + yet, analysis may be improved by marignalizing.
+  + not sure I trust blavaan yet
+  + even so, it tells you what it did!
