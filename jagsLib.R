@@ -2,6 +2,8 @@ require(R2jags)
 require(infinitefactor)
 require(abind)
 
+
+
 condMan.mod="
 model{
   for (j in 1:J){

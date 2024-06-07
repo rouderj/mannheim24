@@ -47,7 +47,7 @@ knitr::opts_chunk$set(echo = FALSE,message=FALSE, warning=FALSE)
 5. Enter Bayes
 
 
-# Libraries
+## Libraries
 
 ```{r,echo=T}
 library(corrplot)
@@ -85,7 +85,7 @@ y=rmvnorm(I,rep(0,J),Sigma)
 
 ## My turn
 
-```{r,cache=TRUE}
+```{r}
 set.seed(1234)
 source('jagsLib.R')
 prior=list("rDel"=.50,"rLam"=.50,a=0,b=1)
@@ -189,4 +189,39 @@ makePositive=function(lambda){
 
 Me? I use `jointRot` in `infinitefactor`
 
-## 
+##  Hierarchical Factor Models
+
+Illusions Data:
+
+- 138 people
+- 10 tasks
+  +  5 Illusions
+  + 2 versions each
+- 15 trials per task
+
+Q? How many factors mediate visual illusions.
+
+
+## Model 1, Exploratory Factor Model
+\[\begin{aligned}
+Y_{ijk} | \theta_{ij} &\sim \mbox{N}(\theta_{ij},\tau^2_j)\\
+\bftheta_i &\sim \mbox{N}_J(\bfmu,\;\bflambda\bflambda'+D(\bfdelta^2))
+\end{aligned}
+\]
+
+## Model 2, Confirmatory Factor Model
+\[
+\bflambda=\begin{pmatrix}
+\lambda_{11} & 0 & 0 & 0 & 0 & \lambda_{16} & \lambda_{17}\\
+\lambda_{21} & 0 & 0 & 0 & 0 & \lambda_{26} & \lambda_{27}\\
+0 &\lambda_{32}  & 0 & 0 & 0 & \lambda_{36} & \lambda_{37}\\
+0 &\lambda_{42}  & 0 & 0 & 0 & \lambda_{46} & \lambda_{47}\\
+0 & 0 &\lambda_{53} & 0 & 0 & \lambda_{56} & \lambda_{57}\\
+0 & 0 &\lambda_{63} & 0 & 0 & \lambda_{66} & \lambda_{67}\\
+0 & 0 & 0 & \lambda_{74} &0 & \lambda_{76} & \lambda_{77}\\
+0 & 0 & 0 & \lambda_{84} &0 & \lambda_{86} & \lambda_{87}\\
+0 & 0 & 0 & 0 & \lambda_{9,5}&\lambda_{96} & \lambda_{97}\\
+0 & 0 & 0 & 0 & \lambda_{10,5}&\lambda_{10,6} & \lambda_{10,7}\\
+\end{pmatrix}
+\]
+

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.21)  5 JUN 2024 12:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.21)  6 JUN 2024 21:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1262,22 +1262,27 @@ xlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 \openout4 = `lec3BayesLVM.vrb'.
 
 (./lec3BayesLVM.vrb
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 6
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
 .
 (/usr/local/texlive/2023/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 7.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 5.
 ) [5
 
-] [6
+]
+\openout4 = `lec3BayesLVM.vrb'.
+
+(./lec3BayesLVM.vrb) [6
+
+] [7
 
 ]
 \openout4 = `lec3BayesLVM.vrb'.
 
 (./lec3BayesLVM.vrb
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf, id=58, 689.57625pt x 4
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf, id=65, 689.57625pt x 4
 29.605pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf Graphic file (type
  pdf)
@@ -1285,7 +1290,7 @@ File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf Graphic file (type
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf
   used on input line 15.
 (pdftex.def)             Requested size: 307.2866pt x 191.4391pt.
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-2.pdf, id=59, 689.57625pt x 4
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-2.pdf, id=66, 689.57625pt x 4
 70.75874pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-2.pdf Graphic file (type
  pdf)
@@ -1293,7 +1298,7 @@ File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-2.pdf Graphic file (type
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-2.pdf
   used on input line 16.
 (pdftex.def)             Requested size: 307.2866pt x 209.7779pt.
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-3.pdf, id=60, 689.57625pt x 4
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-3.pdf, id=67, 689.57625pt x 4
 31.6125pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-3.pdf Graphic file (type
  pdf)
@@ -1301,7 +1306,7 @@ File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-3.pdf Graphic file (type
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-3.pdf
   used on input line 17.
 (pdftex.def)             Requested size: 307.2866pt x 192.33368pt.
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf, id=61, 691.58376pt x 4
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf, id=68, 691.58376pt x 4
 31.6125pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf Graphic file (type
  pdf)
@@ -1309,7 +1314,7 @@ File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf Graphic file (type
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf
   used on input line 18.
 (pdftex.def)             Requested size: 307.29475pt x 191.78046pt.
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-5.pdf, id=62, 665.48625pt x 4
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-5.pdf, id=69, 665.48625pt x 4
 65.74pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-5.pdf Graphic file (type
  pdf)
@@ -1318,34 +1323,34 @@ Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-5.pdf
   used on input line 19.
 (pdftex.def)             Requested size: 307.29515pt x 215.06026pt.
 )
-Overfull \vbox (943.5272pt too high) detected at line 302
+Overfull \vbox (943.5272pt too high) detected at line 315
  []
 
-[7
+[8
 
  <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-1.pdf> <./lec3BayesLVM_fil
 es/figure-beamer/unnamed-chunk-4-2.pdf> <./lec3BayesLVM_files/figure-beamer/unn
 amed-chunk-4-3.pdf> <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-4.pdf> 
 <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-4-5.pdf>]
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf, id=107, 686.565pt x 46
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf, id=113, 686.565pt x 46
 5.74pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf Graphic file (type
  pdf)
 <use lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf>
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf
-  used on input line 307.
+  used on input line 320.
 (pdftex.def)             Requested size: 307.28569pt x 208.45111pt.
-[8
+[9
 
- <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf>] [9
+ <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-5-1.pdf>] [10
 
-] [10
+] [11
 
 ]
 \openout4 = `lec3BayesLVM.vrb'.
 
 (./lec3BayesLVM.vrb
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-7-1.pdf, id=134, 689.57625pt x 
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-7-1.pdf, id=140, 689.57625pt x 
 431.6125pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-7-1.pdf Graphic file (type
  pdf)
@@ -1354,25 +1359,68 @@ Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-7-1.pdf
   used on input line 17.
 (pdftex.def)             Requested size: 307.2866pt x 192.33368pt.
 )
-Overfull \vbox (153.90942pt too high) detected at line 356
+Overfull \vbox (153.90942pt too high) detected at line 369
  []
 
-[11
+[12
 
  <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-7-1.pdf>]
-<lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf, id=148, 686.565pt x 46
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf, id=154, 686.565pt x 46
 5.74pt>
 File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf Graphic file (type
  pdf)
 <use lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf>
 Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf
-  used on input line 361.
+  used on input line 374.
 (pdftex.def)             Requested size: 307.28569pt x 208.45111pt.
-[12
+[13
 
- <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf>] [13
+ <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf>] [14
 
 ]
+\openout4 = `lec3BayesLVM.vrb'.
+
+(./lec3BayesLVM.vrb) [15
+
+]
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-10-1.pdf, id=185, 686.565pt x 4
+65.74pt>
+File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-10-1.pdf Graphic file (typ
+e pdf)
+<use lec3BayesLVM_files/figure-beamer/unnamed-chunk-10-1.pdf>
+Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-10-1.pd
+f  used on input line 415.
+(pdftex.def)             Requested size: 307.28569pt x 208.45111pt.
+[16
+
+ <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-10-1.pdf>]
+<lec3BayesLVM_files/figure-beamer/unnamed-chunk-11-1.pdf, id=200, 689.57625pt x
+ 431.6125pt>
+File: lec3BayesLVM_files/figure-beamer/unnamed-chunk-11-1.pdf Graphic file (typ
+e pdf)
+<use lec3BayesLVM_files/figure-beamer/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-11-1.pd
+f  used on input line 420.
+(pdftex.def)             Requested size: 307.2866pt x 192.33368pt.
+[17
+
+ <./lec3BayesLVM_files/figure-beamer/unnamed-chunk-11-1.pdf>]
+\openout4 = `lec3BayesLVM.vrb'.
+
+(./lec3BayesLVM.vrb) [18
+
+]
+\openout4 = `lec3BayesLVM.vrb'.
+
+(./lec3BayesLVM.vrb) [19
+
+] [20
+
+] [21
+
+{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}] [22
+
+{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 \tf@nav=\write6
 \openout6 = `lec3BayesLVM.nav'.
 
@@ -1384,25 +1432,30 @@ Package pdftex.def Info: lec3BayesLVM_files/figure-beamer/unnamed-chunk-8-1.pdf
 
 (./lec3BayesLVM.aux) ) 
 Here is how much of TeX's memory you used:
- 30758 strings out of 476025
- 617453 string characters out of 5790016
- 1858388 words of memory out of 5000000
- 50394 multiletter control sequences out of 15000+600000
+ 30832 strings out of 476025
+ 619073 string characters out of 5790016
+ 1866388 words of memory out of 5000000
+ 50429 multiletter control sequences out of 15000+600000
  599337 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,13n,122p,1881b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm
-/lmss10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmss8.pfb
-></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmssbo10.pfb></usr/l
-ocal/texlive/2023/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb></usr/local/tex
-live/2023/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr/local/texlive/2023/
-texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2023/texmf-dist/
-fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type
-1/public/lm/lmtt10.pfb>
-Output written on lec3BayesLVM.pdf (13 pages, 425748 bytes).
+/lmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi10.pf
+b></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/loc
+al/texlive/2023/texmf-dist/fonts/type1/public/lm/lmmib10.pfb></usr/local/texliv
+e/2023/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2023/tex
+mf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2023/texmf-dist/fon
+ts/type1/public/lm/lmssbo10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1
+/public/lm/lmssbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/
+lm/lmsso10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsso8
+.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr
+/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texl
+ive/2023/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2023/t
+exmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on lec3BayesLVM.pdf (22 pages, 597651 bytes).
 PDF statistics:
- 225 PDF objects out of 1000 (max. 8388607)
- 161 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
- 57427 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 340 PDF objects out of 1000 (max. 8388607)
+ 246 compressed objects within 3 object streams
+ 66 named destinations out of 1000 (max. 500000)
+ 57437 words of extra memory for PDF output out of 61914 (max. 10000000)
 

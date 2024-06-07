@@ -400,6 +400,7 @@ par(cex=1.5)
 plot(ybar,apply(theta,2,mean))
 abline(0,1)
 ```
+
 ## Up To Now...
 
 
@@ -692,7 +693,7 @@ Y_0&\sim \mbox{Binomial}(\theta,1000)\\
 
 \[
 \begin{aligned}
-BF_{01}=\frac{\Pr(\eta=0|Y)}{\Pr(\eta=1|Y)} &= \frac{\Pr(Y|\eta=0)}{\Pr(Y|\eta=1)} \times \frac{Pr(\eta=0)}{Pr(\eta=1)}\\
+\frac{\Pr(\eta=0|Y)}{\Pr(\eta=1|Y)} &= \frac{\Pr(Y|\eta=0)}{\Pr(Y|\eta=1)} \times \frac{Pr(\eta=0)}{Pr(\eta=1)}\\
 &= \frac{\Pr(Y|\eta=0)}{\Pr(Y|\eta=1)}\\
 &= 1001 \times {N \choose Y}\times.5^N
 \end{aligned}

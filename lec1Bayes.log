@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.21)  4 JUN 2024 11:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.21)  6 JUN 2024 12:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1349,12 +1349,8 @@ File: lec1Bayes_files/figure-beamer/unnamed-chunk-17-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-17-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-17-1.pdf  
-used on input line 636.
+used on input line 627.
 (pdftex.def)             Requested size: 307.28664pt x 185.28925pt.
-
-Overfull \vbox (88.7919pt too high) detected at line 636
- []
-
 [31
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-17-1.pdf>] [32
@@ -1365,182 +1361,184 @@ Overfull \vbox (88.7919pt too high) detected at line 636
 
 ] [35
 
+] [36
+
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf, id=305, 672.5125pt x 405
+<lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf, id=311, 672.5125pt x 405
 .515pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf  
-used on input line 691.
+used on input line 693.
 (pdftex.def)             Requested size: 307.28664pt x 185.28925pt.
-[36
+[37
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-18-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf, id=320, 678.535pt x 405.
+<lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf, id=327, 678.535pt x 405.
 515pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf  
-used on input line 696.
+used on input line 698.
 (pdftex.def)             Requested size: 307.28441pt x 183.64333pt.
-[37
+[38
 
- <./lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf>] [38
+ <./lec1Bayes_files/figure-beamer/unnamed-chunk-19-1.pdf>] [39
 
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf, id=342, 672.5125pt x 406
+<lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf, id=348, 672.5125pt x 406
 .51875pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf  
-used on input line 719.
+used on input line 721.
 (pdftex.def)             Requested size: 307.28664pt x 185.74788pt.
-[39
+[40
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-20-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf, id=357, 672.5125pt x 406
+<lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf, id=363, 672.5125pt x 406
 .51875pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf  
-used on input line 724.
+used on input line 726.
 (pdftex.def)             Requested size: 307.28664pt x 185.74788pt.
-[40
+[41
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-21-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf, id=372, 672.5125pt x 406
+<lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf, id=378, 672.5125pt x 406
 .51875pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf  
-used on input line 729.
+used on input line 731.
 (pdftex.def)             Requested size: 307.28664pt x 185.74788pt.
-[41
+[42
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-22-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf, id=386, 672.5125pt x 405
+<lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf, id=392, 672.5125pt x 405
 .515pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf  
-used on input line 734.
+used on input line 736.
 (pdftex.def)             Requested size: 307.28664pt x 185.28925pt.
-[42
+[43
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-23-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf, id=401, 672.5125pt x 405
+<lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf, id=408, 672.5125pt x 405
 .515pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf  
-used on input line 739.
+used on input line 741.
 (pdftex.def)             Requested size: 307.28664pt x 185.28925pt.
-[43
+[44
 
- <./lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf>] [44
-
-] [45
+ <./lec1Bayes_files/figure-beamer/unnamed-chunk-24-1.pdf>] [45
 
 ] [46
 
+] [47
+
 ]
-Overfull \vbox (2.59822pt too high) detected at line 801
+Overfull \vbox (2.59822pt too high) detected at line 803
  []
 
-[47
+[48
 
-] [48
+] [49
 
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf, id=451, 672.5125pt x 398
+<lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf, id=458, 672.5125pt x 398
 .48875pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf  
-used on input line 813.
+used on input line 815.
 (pdftex.def)             Requested size: 307.28664pt x 182.0788pt.
-[49
+[50
 
- <./lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf>] [50
+ <./lec1Bayes_files/figure-beamer/unnamed-chunk-25-1.pdf>] [51
 
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf, id=472, 672.5125pt x 398
+<lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf, id=478, 672.5125pt x 398
 .48875pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf  
-used on input line 825.
+used on input line 827.
 (pdftex.def)             Requested size: 307.28664pt x 182.0788pt.
-[51
+[52
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-26-1.pdf>]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf, id=486, 675.52374pt x 39
+<lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf, id=492, 675.52374pt x 39
 6.48125pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf  
-used on input line 830.
+used on input line 832.
 (pdftex.def)             Requested size: 307.29163pt x 180.35689pt.
-[52
+[53
 
- <./lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf>] [53
+ <./lec1Bayes_files/figure-beamer/unnamed-chunk-27-1.pdf>] [54
 
-] [54
+] [55
 
 ]
 
 Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 880.
+(amsmath)                 on input line 882.
 
-[55
+[56
 
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf, id=519, 672.5125pt x 389
+<lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf, id=525, 672.5125pt x 389
 .455pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf  
-used on input line 885.
+used on input line 887.
 (pdftex.def)             Requested size: 307.28664pt x 177.95107pt.
-[56
+[57
 
- <./lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf>] [57
+ <./lec1Bayes_files/figure-beamer/unnamed-chunk-28-1.pdf>] [58
 
 ]
-<lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf, id=539, 672.5125pt x 395
+<lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf, id=545, 672.5125pt x 395
 .4775pt>
 File: lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf Graphic file (type p
 df)
 <use lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf>
 Package pdftex.def Info: lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf  
-used on input line 900.
+used on input line 902.
 (pdftex.def)             Requested size: 307.28664pt x 180.70288pt.
-[58
+[59
 
  <./lec1Bayes_files/figure-beamer/unnamed-chunk-29-1.pdf>]
 \openout4 = `lec1Bayes.vrb'.
 
-(./lec1Bayes.vrb) [59
+(./lec1Bayes.vrb) [60
 
 ]
-Overfull \vbox (8.62401pt too high) detected at line 941
+Overfull \vbox (8.62401pt too high) detected at line 943
  []
 
-[60
+[61
 
-] [61
+] [62
 
 ]
 \tf@nav=\write6
@@ -1554,10 +1552,10 @@ Overfull \vbox (8.62401pt too high) detected at line 941
 
 (./lec1Bayes.aux) ) 
 Here is how much of TeX's memory you used:
- 29632 strings out of 476025
- 595430 string characters out of 5790016
+ 29637 strings out of 476025
+ 595476 string characters out of 5790016
  1860388 words of memory out of 5000000
- 49036 multiletter control sequences out of 15000+600000
+ 49038 multiletter control sequences out of 15000+600000
  660942 words of font info for 223 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  128i,13n,122p,1878b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1572,10 +1570,10 @@ lic/lm/lmsso10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lm
 sso8.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><
 /usr/local/texlive/2023/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/
 texlive/2023/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on lec1Bayes.pdf (61 pages, 564744 bytes).
+Output written on lec1Bayes.pdf (62 pages, 564982 bytes).
 PDF statistics:
- 678 PDF objects out of 1000 (max. 8388607)
- 518 compressed objects within 6 object streams
- 183 named destinations out of 1000 (max. 500000)
+ 684 PDF objects out of 1000 (max. 8388607)
+ 523 compressed objects within 6 object streams
+ 186 named destinations out of 1000 (max. 500000)
  94351 words of extra memory for PDF output out of 106986 (max. 10000000)
 
