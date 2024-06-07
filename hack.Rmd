@@ -32,13 +32,10 @@ Masking Models
 
 Let $g(x)$ be a psychometric function.
 
-\[
-g(x) = \Phi(\log(x))
-\]
 
 Then
 \[
-Y_{ijk} \sim \mbox{Bernoulli}(g(t_{ijk}-\theta_{ij})), \; j=1,\ldots,3.
+Y_{ijk} \sim \mbox{Bernoulli}(\Phi(\log(t_{ijk})-\theta_{ij})), \; j=1,\ldots,3.
 \]
 
 
