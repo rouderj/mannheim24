@@ -38,7 +38,7 @@ colnames(out2)=c("sub","task","correct")
 
 K=15
 ill=.01*(6+2*stdDat[,7:11])
-sub=rep(1:I,5*K)
+sub=rep(1:I,each=5*K)
 N=length(sub)
 task=rep(rep(1:5,each=K),I)
 joint=cbind(sub,task)
